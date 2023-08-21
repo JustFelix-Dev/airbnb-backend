@@ -8,22 +8,16 @@ const userModel = require('./models/user');
 const  jwt  = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
-app.use(cookieParser())
+app.use(cookieParser());
 
-// const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Google
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID ;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET;
 
 // GitHub 
 const GITHUB_CLIENT_ID = process.env.GITHUB_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_SECRET;
-
-// Facebook
-// const FACEBOOK_APP_ID='';
-// const FACEBOOK_APP_SECRET ='';
-
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
