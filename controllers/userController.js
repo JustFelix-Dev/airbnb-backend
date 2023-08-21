@@ -145,6 +145,7 @@ const getUsers=async(req,res)=>{
   }
 }
 
+
  const logoutUser = (req,res)=>{
       res.cookie('token','',{secure:true,sameSite:'none',domain:'.felixdev.com.ng'}).json(true)
  }
