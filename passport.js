@@ -37,7 +37,7 @@ passport.use(new GoogleStrategy({
        let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
        if(existingUser){
         const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
-        req.res.cookie('token',token);
+        req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
         console.log(existingUser)
           return done(null,existingUser)
        }
@@ -54,7 +54,7 @@ passport.use(new GoogleStrategy({
           // Generate the JWT token with the user data
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo,admin:existingUser.admin,rewardPoint:existingUser.rewardPoint,badge:existingUser.badge}, process.env.SECRET);
         // Set the token as a cookie in the response
-        req.res.cookie('token', token);
+        req.res.cookie('token', token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
         // Respond with the existing user data as JSON
         return done(null, existingUser);
        }
@@ -78,7 +78,7 @@ passport.use(new GithubStrategy({
         let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
         if(existingUser){
          const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
-         req.res.cookie('token',token);
+         req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
          console.log(existingUser)
            return done(null,existingUser)
         }
@@ -93,7 +93,7 @@ passport.use(new GithubStrategy({
            });
            existingUser = await newUser.save();
          const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
-         req.res.cookie('token', token);
+         req.res.cookie('token', token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
          return done(null, existingUser);
         }
      }catch(err){
