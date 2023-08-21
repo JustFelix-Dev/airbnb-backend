@@ -97,8 +97,7 @@ const loginUser = async(req,res)=>{
             if(isMatched){
                   jwt.sign({email:user.email,id:user._id,photo:user.photo,admin:user.admin,badge:user.badge,rewardPoint:user.rewardPoint},process.env.SECRET,(err,token)=>{
                     if(err) throw err;
-                    res.cookie('token',token).json(user)
-                    console.log(user)
+                    res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'}).json(user)
                   }) 
             }else{
                 res.status(402).json('Wrong credentials!')
@@ -147,7 +146,7 @@ const getUsers=async(req,res)=>{
 }
 
  const logoutUser = (req,res)=>{
-      res.cookie('token','').json(true)
+      res.cookie('token','',{secure:true,sameSite:'none',domain:'.felixdev.com.ng'}).json(true)
  }
 
 

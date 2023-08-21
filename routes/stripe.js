@@ -68,7 +68,7 @@ const discountedPrice = booking.price - (booking.price * discountPercentage);
             currency: 'usd',
             product_data: {
               name: booking.place.title,
-              images:[`http://localhost:8000/uploads/${booking.place.photos[0]}`],
+              images:[`https://www.airbnb-server.felixdev.com.ng/uploads/${booking.place.photos[0]}`],
               description:`---------You have a ${discountPercentage *100}% discount on this reservation!.---------${booking.place.extraInfo}`,
               metadata:{
                 id:booking._id,
@@ -82,8 +82,8 @@ const discountedPrice = booking.price - (booking.price * discountPercentage);
       ],
       customer: customer.id,
       mode: 'payment',
-      success_url: `http://localhost:5173/checkout-success/${booking._id}`,
-      cancel_url: 'http://localhost:5173/account/bookings',
+      success_url: `https://www.airbnb.felixdev.com.ng/checkout-success/${booking._id}`,
+      cancel_url: 'https://www.airbnb.felixdev.com.ng/account/bookings',
     });
   
     res.send({url: session.url})

@@ -37,7 +37,7 @@ app.set('view engine','ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
-       origin:'http://localhost:5173'
+       origin:'https://www.airbnb.felixdev.com.ng'
     }))
 
 // Social Auth
@@ -174,7 +174,7 @@ app.post('/forgotPassword',async(req,res)=>{
         const SECRET = process.env.SECRET;
         const secret = SECRET + existingUser?.password;
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
-        const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
+        const link = `https://www.airbnb-server.felixdev.com.ng/reset-password/${existingUser._id}/${token}`;
         //send email with the reset password url to the registered mail id
         resetPasswordEmail(existingUser.name,existingUser.email,link)
         res.status(200).json('Reset Link sent successfully!')
