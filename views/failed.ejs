@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirBnb | Failed</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+    *{
+        font-family: 'Mukta', sans-serif;
+    }
+    .container{
+        border:2px solid gray;
+        width: 60%;
+        margin: 0 auto;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    .imageHolder{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        border-bottom:1px solid #FF385C;
+    }
+    button,input[type ='submit']{
+        padding: .3rem 1rem;
+        background-color: #FF385C;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+    form,.form{
+        padding: 2rem 7rem;
+    }
+    h3{
+        color: green;
+    }
+    @media screen and (max-width:620px){
+        form,.form{
+            padding:2rem 1rem;
+        }
+    }
+    @media screen and (max-width:590px){
+       .container{
+        width: 90%;
+       }
+    }
+</style>
+<body>
+      <div class="container">
+        <div class="imageHolder">
+            <img src="/airbnb-logo.png" alt="airbnbHeader" style="text-align:center;display:block;height:150px;width:200px;">
+        </div>
+        <div class="form">
+            <h3>User - <%= email%></h3>
+            <h2>Your Passwords do not match!. Carefully check through!</h2>
+            <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
+            <button id="goBackButton">Go Back</button>
+        </div>
+      </div>
+</body>
+<script>
+     document.getElementById('goBackButton').addEventListener('click', function() {
+            window.history.back();
+        });
+  
+</script>
+</body>
+</html>
