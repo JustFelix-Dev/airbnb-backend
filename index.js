@@ -38,9 +38,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
        origin:'https://www.airbnb.felixdev.com.ng',
-       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-       preflightContinue: false,
-       optionsSuccessStatus: 204
+    
     }))
 
 // Social Auth
