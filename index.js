@@ -37,7 +37,10 @@ app.set('view engine','ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
-       origin:'https://www.airbnb.felixdev.com.ng'
+       origin:'https://www.airbnb.felixdev.com.ng',
+       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+       preflightContinue: false,
+       optionsSuccessStatus: 204
     }))
 
 // Social Auth
@@ -50,7 +53,6 @@ app.use(cors({
    app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://www.airbnb.felixdev.com.ng');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    
     next();
     });
    
