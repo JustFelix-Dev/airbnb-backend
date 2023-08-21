@@ -7,7 +7,7 @@ const passport = require('passport');
 app.use(cookieParser());
 
 
-const CLIENT_URI = 'https://www.airbnb-server.felixdev.com.ng/'
+const CLIENT_URI = 'https://www.airbnb.felixdev.com.ng/'
 
 router.get('/login/success',(req,res)=>{
     const token = req.cookies.token
