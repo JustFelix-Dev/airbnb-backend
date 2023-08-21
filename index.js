@@ -46,6 +46,13 @@ app.use(cors({
         resave: false,
         saveUninitialized: false,
    }))
+
+   app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.airbnb.felixdev.com.ng');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    
+    next();
+    });
    
    app.use(passport.initialize());
    app.use(passport.session());
