@@ -9,7 +9,6 @@ const app = express();
 const nodemailer = require('nodemailer');
 const validator = require('validator');
 const cloudinary = require('../uploadImages');
-const { default: ProfilePage } = require('../../client/src/pages/ProfilePage');
 
 // Middleware
 app.use(cookieParser())
