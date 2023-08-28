@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
   async function(req,accessToken, refreshToken, profile, done){
     //   Check If user exists
     try{
-       let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+       let existingUser =  await userModel.findOne({email:profile.emails[0].value})
        if(existingUser){
         const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
         req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
@@ -69,7 +69,7 @@ passport.use(new GithubStrategy({
   async function(req,accessToken, refreshToken, profile, done){
     //   Check If user exists
     try{
-        let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+        let existingUser =  await userModel.findOne({email:profile?.emails[0].value})
         if(existingUser){
          const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
          req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});

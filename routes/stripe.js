@@ -91,7 +91,7 @@ const discountedPrice = booking.price - (booking.price * discountPercentage);
 
 //   Send Order Email to the user/customer
 const OrderEmail=async(customer,data)=>{
-    const details = JSON.parse(customer.metadata.booking)
+    const details = JSON.parse(customer.metadata.booking);
     const html = `
     <div style="width: 80%; margin: 0 auto;box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);text-align:center;">
     <img src="cid:airbnbHeader" alt="headerImg" style="display: block; object-fit: cover" width="100%" height="200px" />
