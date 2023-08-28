@@ -8,6 +8,8 @@ configDotenv();
 const app = express();
 const nodemailer = require('nodemailer');
 const validator = require('validator');
+const cloudinary = require('../uploadImages');
+const { default: ProfilePage } = require('../../client/src/pages/ProfilePage');
 
 // Middleware
 app.use(cookieParser())
@@ -78,8 +80,13 @@ const registrationEmail=async(name,email,password)=>{
          }
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
-
-       user = await userModel.create({name,email,admin:isAdmin,photo,rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
+         const result = await cloudinary.uploader.upload( photo,{
+           public_id: "profile",
+           folder: "userImages"
+         })
+         const resultUrl = result.secure_url;
+       user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
+        rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
         res.json({user,message:'Registration Successful!'})
         registrationEmail(name,email,password)
     }
