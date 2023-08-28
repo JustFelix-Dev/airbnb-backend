@@ -37,8 +37,7 @@ app.set('view engine','ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
-       origin:'https://www.airbnb.felixdev.com.ng',
-    
+       origin:['https://www.airbnb.felixdev.com.ng','http:localhost:5174'],
     }))
 
 // Social Auth
