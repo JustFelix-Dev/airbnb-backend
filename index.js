@@ -46,10 +46,13 @@ app.use(cors({
         saveUninitialized: false,
    }))
 
-   app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://www.airbnb.felixdev.com.ng');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
+   // Middleware to handle CORS
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'https://www.airbnb.felixdev.com.ng');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.header('Access-Control-Allow-Credentials', 'true');
+        next();
     });
    
    app.use(passport.initialize());
