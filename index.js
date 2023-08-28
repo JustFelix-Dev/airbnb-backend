@@ -133,25 +133,6 @@ const resetPasswordEmail=async(name,email,link)=>{
     }) 
 
     const photosMiddleware = multer({dest:'uploads/'});
-    const photoMiddleware = multer({dest:'userPhoto/'});
-
-  app.post('/userPhoto', photoMiddleware.single('photo'), (req, res) => {
-    try {
-        const { path, originalname } = req.file;
-        console.log(req.file);
-
-        const parts = originalname.split('.');
-        const format = parts[parts.length - 1];
-        const newPath = path + '.' + format;
-        fs.renameSync(path, newPath);
-        const uploadedFile = newPath.replace('userPhoto', '');
-        console.log(uploadedFile);
-        res.json({ photo: uploadedFile });
-    } catch (error) {
-        console.error('Error uploading photo:', error);
-        res.status(500).json({ error: 'Failed to upload photo' });
-    }
-});
 
 
 app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
