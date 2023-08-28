@@ -80,7 +80,7 @@ const registrationEmail=async(name,email,password)=>{
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
          const result = await cloudinary.uploader.upload( photo,{
-           public_id: "profile" + Math.floor(Math.random()*100),
+           public_id: "profile/" + Date.now(),
            folder: "userImages"
          })
          const resultUrl = result.secure_url;
