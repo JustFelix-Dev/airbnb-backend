@@ -106,9 +106,6 @@ const resetPasswordEmail=async(name,email,link)=>{
               user: 'owolabifelix78@gmail.com',
               pass: process.env.GOOGLE_PASS
           },
-          tls:{
-            ciphers: "SSLv3",
-          }
       })
       try{
         const info = await transporter.sendMail({
