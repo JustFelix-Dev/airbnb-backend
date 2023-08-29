@@ -140,24 +140,44 @@ const resetPasswordEmail=async(name,email,link)=>{
     const photosMiddleware = multer();
 
 
-app.post('/upload',photosMiddleware.array('photos',100),async(req,res)=>{
-        const uploadedFiles = [];
-
-      for(let i = 0; i <req.files.length; i++){
-          const { buffer,originalname } = req.files[i];
-
-        //   Upload to Cloudinary
-        const uploadedImages = await cloudinary.uploader.upload_stream({
-            resource_type:'raw',
-        },(error,result)=>{
-            if(error){
-                console.log("Error Uploading to Cloudinary:", error)
+    app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
+        try {
+          const uploadedFiles = [];
+      
+          // Define a function to upload to Cloudinary
+          const uploadToCloudinary = async (buffer) => {
+            return new Promise((resolve, reject) => {
+              cloudinary.uploader.upload_stream({
+                resource_type: 'raw',
+              }, (error, result) => {
+                if (error) {
+                  reject(error); // Reject the promise on error
+                } else {
+                  resolve(result); // Resolve the promise with the result on success
+                }
+              }).end(buffer);
+            });
+          };
+      
+          for (let i = 0; i < req.files.length; i++) {
+            const { buffer, originalname } = req.files[i];
+      
+            try {
+              // Upload to Cloudinary using the custom promise function
+              const uploadedImage = await uploadToCloudinary(buffer);
+              uploadedFiles.push(uploadedImage.secure_url);
+            } catch (error) {
+              console.error('Error uploading to Cloudinary:', error);
             }
-        }).end(buffer);
-         uploadedFiles.push(uploadedImages.secure_url);
-      }
-        res.json(uploadedFiles)
-})
+          }
+      
+          res.json(uploadedFiles);
+        } catch (error) {
+          console.error('Error processing files:', error);
+          res.status(500).json({ error: 'Error processing files' });
+        }
+      });
+      
 
 // Resetting Password Routes
 
