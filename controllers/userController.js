@@ -9,6 +9,8 @@ const app = express();
 const nodemailer = require('nodemailer');
 const validator = require('validator');
 const cloudinary = require('../uploadImages');
+const fs = require('fs');
+
 
 // Middleware
 app.use(cookieParser())
