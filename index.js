@@ -126,20 +126,25 @@ const resetPasswordEmail=async(name,email,link)=>{
   
    
 }
+
 //download image from link and save it to uploads folder using npm package "image-downloader';
- app.post('/uploadByLink',async( req,res )=>{
-    const {link} = req.body;
-    const newName = 'photo'+ Date.now() + '.jpg';
-   await download.image({
-        url:link,
-        dest: __dirname + '/uploads/' +newName,
-    })
-    res.json(newName)
-    }) 
-
+app.post('/uploadByLink', async(req, res) => {
+    try {
+      const { link } = req.body;
+      // Upload image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(link, {
+        // resource_type: 'image', // Upload as an image
+        folder: 'airbnbLocations', // Specify the folder name here
+      });
+  
+      res.json(uploadedImage.secure_url);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      res.status(500).json({ error: 'Error uploading image' });
+    }
+  });
+  
     const photosMiddleware = multer();
-
-
     app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
         try {
           const uploadedFiles = [];
@@ -149,6 +154,7 @@ const resetPasswordEmail=async(name,email,link)=>{
             return new Promise((resolve, reject) => {
               cloudinary.uploader.upload_stream({
                 resource_type: 'image',
+                folder: "airbnbLocations"
               }, (error, result) => {
                 if (error) {
                   reject(error); // Reject the promise on error
