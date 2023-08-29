@@ -32,8 +32,11 @@ const cloudinary = require('./uploadImages');
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('public'));
-app.set('view engine','ejs')
+app.set('view engine','ejs');
 app.use(express.urlencoded({extended: false}))
+app.use(express.json({
+    limit: '50mb'
+}));
 app.use(cors({
     credentials: true,
        origin:'https://www.airbnb.felixdev.com.ng',
