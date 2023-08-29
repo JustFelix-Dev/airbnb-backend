@@ -109,7 +109,7 @@ const loginUser = async(req,res)=>{
                 res.status(402).json('Wrong credentials!')
             }
          }else{
-            res.status(401).json('User not found')
+            res.status(401).json('Wrong credentials!')
          }
     }
     catch(err){
