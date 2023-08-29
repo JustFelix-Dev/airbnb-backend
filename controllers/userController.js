@@ -97,7 +97,8 @@ const registrationEmail = async (name, email, password) => {
 
 
  const registerUser = async(req,res)=>{
-   const { name,email,password,photo } = req.body;
+   const { name,email,password} = req.body;
+   const  photo  = req.file;
     try{
          let user = await userModel.findOne({email});
          if(user){
@@ -116,7 +117,7 @@ const registrationEmail = async (name, email, password) => {
          }
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
-         const result = await cloudinary.uploader.upload( photo,{
+         const result = await cloudinary.uploader.upload( photo.path,{
            public_id: "profile/" + Date.now(),
            folder: "userImages"
          })
