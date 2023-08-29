@@ -96,41 +96,94 @@ const registrationEmail = async (name, email, password) => {
 };
 
 
- const registerUser = async(req,res)=>{
-   const { name,email,password} = req.body;
-   const  photo  = req.file;
-    try{
-         let user = await userModel.findOne({email});
-         if(user){
-            return res.status(400).json('Email already exists!');
-         }
+//  const registerUser = async(req,res)=>{
+//    const { name,email,password} = req.body;
+//    const  photo  = req.file;
+//     try{
+//          let user = await userModel.findOne({email});
+//          if(user){
+//             return res.status(400).json('Email already exists!');
+//          }
          
-         if(!name || !email || !password || !photo){
-            return res.status(400).json("All fields are required!");
-         }
+//          if(!name || !email || !password || !photo){
+//             return res.status(400).json("All fields are required!");
+//          }
 
-         if(!validator.isEmail(email)){
-          return res.status(400).json("Invalid Email Address!");
-         }
-         if(!validator.isStrongPassword(password)){
-          return res.status(400).json("Please Choose a Strong Password!");
-         }
-         const bcryptSalt  = bcrypt.genSaltSync();
-         const isAdmin = password.includes(process.env.KEY);
-         const result = await cloudinary.uploader.upload( photo.path,{
-           public_id: "profile/" + Date.now(),
-           folder: "userImages"
-         })
-         const resultUrl = result.secure_url;
-       user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
-        rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
-        res.json({user,message:'Registration Successful!'})
-        registrationEmail(name,email,password)
+//          if(!validator.isEmail(email)){
+//           return res.status(400).json("Invalid Email Address!");
+//          }
+//          if(!validator.isStrongPassword(password)){
+//           return res.status(400).json("Please Choose a Strong Password!");
+//          }
+//          const bcryptSalt  = bcrypt.genSaltSync();
+//          const isAdmin = password.includes(process.env.KEY);
+//          const result = await cloudinary.uploader.upload( photo.path,{
+//            public_id: "profile/" + Date.now(),
+//            folder: "userImages"
+//          })
+//          const resultUrl = result.secure_url;
+//        user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
+//         rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
+//         res.json({user,message:'Registration Successful!'})
+//         registrationEmail(name,email,password)
+//     }
+//     catch(err){
+//         res.status(422).json(err)
+//     }
+// }
+const registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    let user = await userModel.findOne({ email });
+    if (user) {
+      return res.status(400).json('Email already exists!');
     }
-    catch(err){
-        res.status(422).json(err)
+
+    if (!name || !email || !password) {
+      return res.status(400).json('All fields are required!');
     }
-}
+
+    if (!validator.isEmail(email)) {
+      return res.status(400).json('Invalid Email Address!');
+    }
+    if (!validator.isStrongPassword(password)) {
+      return res.status(400).json('Please Choose a Strong Password!');
+    }
+
+    const bcryptSalt = bcrypt.genSaltSync();
+    const isAdmin = password.includes(process.env.KEY);
+
+    if (!req.file) {
+      return res.status(400).json('Photo is required!');
+    }
+
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: 'profile/' + Date.now(),
+      folder: 'userImages'
+    });
+
+    const resultUrl = result.secure_url;
+
+    user = await userModel.create({
+      name,
+      email,
+      admin: isAdmin,
+      photo: resultUrl,
+      rewardPoint: 0,
+      badge: 'Bronze',
+      password: bcrypt.hashSync(password, bcryptSalt)
+    });
+
+    // Delete the temporary uploaded image from the server
+    fs.unlinkSync(req.file.path);
+
+    res.json({ user, message: 'Registration Successful!' });
+    registrationEmail(name, email, password);
+  } catch (err) {
+    res.status(422).json(err);
+  }
+};
+
 
 const loginUser = async(req,res)=>{
     try{
