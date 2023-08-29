@@ -25,13 +25,13 @@ const passport = require('passport');
 const userModel = require('./models/user');
 const nodemailer = require('nodemailer');
 const Order = require('./models/order');
+const cloudinary = require('./uploadImages');
 
 
 // Middleware
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('public'));
-app.use('/uploads',express.static(__dirname+'/uploads'))
 app.set('view engine','ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
@@ -137,22 +137,24 @@ const resetPasswordEmail=async(name,email,link)=>{
     res.json(newName)
     }) 
 
-    const photosMiddleware = multer({dest:'uploads/'});
+    const photosMiddleware = multer();
 
 
-app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
+app.post('/upload',photosMiddleware.array('photos',100),async(req,res)=>{
         const uploadedFiles = [];
 
       for(let i = 0; i < req.files.length; i++){
-          const {path,originalname} = req.files[i];
-          console.log(req.files)
-          const parts = originalname.split('.');
-          const format = parts[parts.length - 1];
-          const newPath = path + '.' + format;
-          fs.renameSync(path, newPath);
-          console.log(newPath)
-          uploadedFiles.push(newPath.replace("uploads",''))
-          console.log(uploadedFiles)
+          const { buffer,originalname } = req.files[i];
+
+        //   Upload to Cloudinary
+        const uploadedImages = await cloudinary.uploader.upload_stream({
+            resource_type:'raw',
+        },(error,result)=>{
+            if(error){
+                console.log("Error Uploading to Cloudinary:", error)
+            }
+        }).end(buffer);
+         uploadedFiles.push(uploadedImages.secure_url);
       }
         res.json(uploadedFiles)
 })
