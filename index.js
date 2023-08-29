@@ -176,7 +176,7 @@ app.post('/forgotPassword',async(req,res)=>{
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
         const link = `https://www.airbnb-server.felixdev.com.ng/reset-password/${existingUser._id}/${token}`;
         //send email with the reset password url to the registered mail id
-        resetPasswordEmail(existingUser.name,existingUser.email,link)
+        resetPasswordEmail(existingUser?.name,existingUser?.email,link)
         res.status(200).json('Reset Link sent successfully!')
       }catch(err){
         res.status(401).json('Something went wrong!')
