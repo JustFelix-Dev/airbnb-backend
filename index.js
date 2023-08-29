@@ -143,7 +143,7 @@ const resetPasswordEmail=async(name,email,link)=>{
 app.post('/upload',photosMiddleware.array('photos',100),async(req,res)=>{
         const uploadedFiles = [];
 
-      for(let i = 0; i < req.files.length; i++){
+      for(let i = 0; i <req.files.length; i++){
           const { buffer,originalname } = req.files[i];
 
         //   Upload to Cloudinary
