@@ -100,25 +100,33 @@ const resetPasswordEmail=async(name,email,link)=>{
                    </div>`;
    const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
+          port: 587,
+          secure: false,
           auth:{
               user: 'owolabifelix78@gmail.com',
               pass: process.env.GOOGLE_PASS
+          },
+          tls:{
+            ciphers: "SSLv3",
           }
       })
-   const info = await transporter.sendMail({
-          from: 'AirBnb <owolabifelix78@gmail.com>',
-          to: email,
-          subject:'AirBnb - Password Reset!',
-          html: html,
-          attachments:[{
-                filename: 'emailHeader.jpg',
-                path: './emailImages/emailHeader.jpg',
-                cid: 'airbnbHeader'
-          }]
-   })
-   console.log('Message Sent:' + info.messageId);
+      try{
+        const info = await transporter.sendMail({
+            from: 'AirBnb <owolabifelix78@gmail.com>',
+            to: email,
+            subject:'AirBnb - Password Reset!',
+            html: html,
+            attachments:[{
+                  filename: 'emailHeader.jpg',
+                  path: './emailImages/emailHeader.jpg',
+                  cid: 'airbnbHeader'
+            }]
+     })
+     console.log('Message Sent:' + info.messageId);
+      }catch(err){
+           console.log("Message Error:", err)
+      }
+  
    
 }
 //download image from link and save it to uploads folder using npm package "image-downloader';
@@ -174,7 +182,7 @@ app.post('/forgotPassword',async(req,res)=>{
         resetPasswordEmail(existingUser.name,existingUser.email,link)
         res.status(200).json('Reset Link sent successfully!')
       }catch(err){
-
+        res.status(401).json('Something went wrong!')
       }
 })
 
