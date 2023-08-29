@@ -148,7 +148,7 @@ const resetPasswordEmail=async(name,email,link)=>{
           const uploadToCloudinary = async (buffer) => {
             return new Promise((resolve, reject) => {
               cloudinary.uploader.upload_stream({
-                resource_type: 'raw',
+                resource_type: 'image',
               }, (error, result) => {
                 if (error) {
                   reject(error); // Reject the promise on error
