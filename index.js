@@ -133,7 +133,7 @@ app.post('/uploadByLink', async(req, res) => {
       const { link } = req.body;
       // Upload image to Cloudinary
       const uploadedImage = await cloudinary.uploader.upload(link, {
-        // resource_type: 'image', // Upload as an image
+       
         folder: 'airbnbLocations', // Specify the folder name here
       });
   
