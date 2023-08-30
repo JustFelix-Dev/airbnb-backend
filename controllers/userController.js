@@ -108,6 +108,11 @@ const registrationEmail=(name,email,password)=>{
         user: 'owolabifelix78@gmail.com',
         pass: process.env.GOOGLE_PASS,
       },
+      tls:{
+          rejectUnauthorized: true,
+        
+      },
+      ignoreTLS: true,
      })
 
      let mailOption = {
@@ -118,7 +123,7 @@ const registrationEmail=(name,email,password)=>{
      }
 
      transporter.sendMail(mailOption).then((response)=>{
-      res.json("Message Sent!")
+      res.json({message:"Sent",response: response.envelope.to})
      }).catch((err)=>{
       console.log(`Error Occured:${err}`)
      })
