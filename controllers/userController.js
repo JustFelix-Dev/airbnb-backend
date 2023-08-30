@@ -162,9 +162,8 @@ const registerUser = async (req, res) => {
       if(!req.file) {
         return res.status(400).json('Photo is required!');
       }
-
       const { buffer,originalName} = req.file;
-       // Define a function to upload to Cloudinary
+       // function to upload to Cloudinary
     const uploadToCloudinary = async (buffer) => {
       return new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream({

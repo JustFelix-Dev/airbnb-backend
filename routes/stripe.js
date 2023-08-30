@@ -68,7 +68,7 @@ const discountedPrice = booking.price - (booking.price * discountPercentage);
             currency: 'usd',
             product_data: {
               name: booking.place.title,
-              images:[`https://www.airbnb-server.felixdev.com.ng/uploads/${booking.place.photos[0]}`],
+              images:[`${booking.place.photos[0]}`],
               description:`---------You have a ${discountPercentage *100}% discount on this reservation!.---------${booking.place.extraInfo}`,
               metadata:{
                 id:booking._id,
