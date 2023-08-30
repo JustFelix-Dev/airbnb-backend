@@ -40,19 +40,27 @@ const registrationEmail=async(name,email,password)=>{
                     </div>`;
     const transporter = nodemailer.createTransport({
            host: "smtp.gmail.com",
-           port: 587,
-           secure: false,
-           requireTLS:false,
+           port: 465,
+           secure: true,
            auth:{
                user: 'owolabifelix78@gmail.com',
                pass: process.env.GOOGLE_PASS
            },
-           tls:{
-            rejectUnauthorized: false,
-            servername: "smtp.gmail.com"
-           }
        })
-    const info = await transporter.sendMail({
+
+       await new Promise((resolve,reject)=>{
+          //  verify connection config
+          transporter.verify(function(error,success){
+            if(error){
+              console.log(error)
+              reject(error)
+            }else{
+              console.log("Server is ready to take our messages");
+              resolve(success);
+            }
+          })
+       })
+    const mailData = {
            from: 'AirBnb <owolabifelix78@gmail.com>',
            to: email,
            subject:'Welcome to AirBnb!',
@@ -62,77 +70,25 @@ const registrationEmail=async(name,email,password)=>{
                  path: './emailImages/emailHeader.jpg',
                  cid: 'airbnbHeader'
            }]
+    };
+
+    await new Promise((resolve,reject)=>{
+      // send mail
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+            console.error(err);
+            reject(err);
+        } else {
+            console.log(info);
+            resolve(info);
+        }
+    });
     })
-    console.log('Message Sent:' + info.messageId);
+
+    console.log('Message Sent');
     
 }
 
-// const registrationEmail = async (name, email, password) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
-
-//       const transporter = nodemailer.createTransport({
-//         host: "smtp.gmail.com",
-//         port: 465,
-//         secure: true,
-//         auth: {
-//           user: 'owolabifelix78@gmail.com',
-//           pass: process.env.GOOGLE_PASS
-//         }
-//       });
-
-//       const info = await transporter.sendMail({
-//         from: 'AirBnb <owolabifelix78@gmail.com>',
-//         to: email,
-//         subject: 'Welcome to AirBnb!',
-//         html: html,
-//         attachments: [{
-//           filename: 'emailHeader.jpg',
-//           path: './emailImages/emailHeader.jpg',
-//           cid: 'airbnbHeader'
-//         }]
-//       });
-
-//       console.log('Message Sent:' + info.messageId);
-//       resolve(info.messageId);
-//     } catch (error) {
-//       console.error('Error sending registration email:', error);
-//       reject(error);
-//     }
-//   });
-// };
-
-
-
-
-// const registrationEmail=(name,email,password)=>{
-//      let transporter = nodemailer.createTransport({
-//       service:"gmail",
-//       auth:{
-//         user: 'owolabifelix78@gmail.com',
-//         pass: process.env.GOOGLE_PASS,
-//       },
-//       tls:{
-//           rejectUnauthorized: true,
-        
-//       },
-//       ignoreTLS: true,
-//      })
-
-//      let mailOption = {
-//       from : 'Airbnb <owolabifelix78@gmail.com>',
-//       to : email,
-//       subject: "Welcome to AirBnb!",
-//       text: `Welcome ${name}-Password-${password}`
-//      }
-
-//      transporter.sendMail(mailOption).then((response)=>{
-//       res.json({message:"Sent",response: response.envelope.to})
-//      }).catch((err)=>{
-//       console.log(`Error Occured:${err}`)
-//      })
-// }
 
 
 const registerUser = async (req, res) => {
