@@ -10,6 +10,7 @@ const nodemailer = require('nodemailer');
 const validator = require('validator');
 const cloudinary = require('../uploadImages');
 const fs = require('fs');
+const multer = require('multer');
 
 
 // Middleware
@@ -133,6 +134,8 @@ const registrationEmail = async (name, email, password) => {
 //         res.status(422).json(err)
 //     }
 // }
+
+
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -154,33 +157,52 @@ const registerUser = async (req, res) => {
 
     const bcryptSalt = bcrypt.genSaltSync();
     const isAdmin = password.includes(process.env.KEY);
+   
+    try{
+      if(!req.file) {
+        return res.status(400).json('Photo is required!');
+      }
 
-    if (!req.file) {
-      return res.status(400).json('Photo is required!');
+      const { buffer,originalName} = req.file;
+       // Define a function to upload to Cloudinary
+    const uploadToCloudinary = async (buffer) => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({
+          resource_type: 'image',
+          folder: "userImages"
+        }, (error, result) => {
+          if (error) {
+            reject(error); // Reject the promise on error
+          } else {
+            resolve(result); // Resolve the promise with the result on success
+          }
+        }).end(buffer);
+      });
+    }; 
+    try {
+      // Upload to Cloudinary using the custom promise function
+      const uploadedImage = await uploadToCloudinary(buffer);
+      const uploadedUrl = uploadedImage.secure_url;
+      user = await userModel.create({
+        name,
+        email,
+        admin: isAdmin,
+        photo: uploadedUrl,
+        rewardPoint: 0,
+        badge: 'Bronze',
+        password: bcrypt.hashSync(password, bcryptSalt)
+      });
+  
+      res.json({ user, message: 'Registration Successful!' });
+      registrationEmail(name, email, password);
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      res.status(500).json({ error: 'Error uploading to Cloudinary' });
     }
-
-    const result = await cloudinary.uploader.upload(req.file.name, {
-      public_id: 'profile/' + Date.now(),
-      folder: 'userImages'
-    });
-
-    const resultUrl = result.secure_url;
-
-    user = await userModel.create({
-      name,
-      email,
-      admin: isAdmin,
-      photo: resultUrl,
-      rewardPoint: 0,
-      badge: 'Bronze',
-      password: bcrypt.hashSync(password, bcryptSalt)
-    });
-
-    // Delete the temporary uploaded image from the server
-    fs.unlinkSync(req.file.path);
-
-    res.json({ user, message: 'Registration Successful!' });
-    registrationEmail(name, email, password);
+    }catch(error){
+      console.error('Error processing file:', error);
+      res.status(500).json({ error: 'Error processing file' });
+    }
   } catch (err) {
     res.status(422).json(err);
   }

@@ -130,14 +130,12 @@ const resetPasswordEmail=async(name,email,link)=>{
    
 }
 
-//download image from link and save it to uploads folder using npm package "image-downloader';
 app.post('/uploadByLink', async(req, res) => {
     try {
       const { link } = req.body;
       // Upload image to Cloudinary
       const uploadedImage = await cloudinary.uploader.upload(link, {
-       
-        folder: 'airbnbLocations', // Specify the folder name here
+        folder: 'airbnbLocations', 
       });
   
       res.json(uploadedImage.secure_url);
