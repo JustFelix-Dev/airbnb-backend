@@ -17,50 +17,55 @@ const multer = require('multer');
 app.use(cookieParser())
 
 // Registration Email
-// const registrationEmail=async(name,email,password)=>{
-//      const html = `<style>
-//                     @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
-//                     *{
-//                       box-sizing:border-box;
-//                       font-family: 'Mukta', sans-serif;
-//                     }
-//                     </style>
-//                     <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
-//                     <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
-//                       <h2>Hii ${name.split(' ')[0]},</h2>
-//                     <p style='max-width:80ch'>Now that you’re part of a global community of guests and Hosts, millions of doors have just opened to you. You'll discover getaways you’ve always dreamed of and places you wouldn’t have known to search for.</p>
-//                     <h3>Below are your details upon registration:</h3>
-//                       <div style='width:60%;border-radius:10px;border:1px dotted #FF5A5F;margin:0 auto;padding:1rem;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px #333'>
-//                       <div><strong>Name</strong> : <span style='font-weight:600;color:green'>${name}</span></div>
-//                       <div><strong>Email</strong> : <span style='font-weight:600;color:green'>${email}</span></div>
-//                       <div><strong>Password</strong> : <span style='font-weight:600;color:green'>${password}</span></div>
-//                       </div>
-//                       <p><strong>N.B:</strong> Ensure to be careful with your details.</p>
-//                       <p style='margin-block:15px'>Thank You for choosing us!. Be sure that you are going to have the best experience with the state-of-the-art apartments we have available for you.</p>
-//                     </div>`;
-//     const transporter = nodemailer.createTransport({
-//            host: "smtp.gmail.com",
-//            port: 465,
-//            secure: true,
-//            auth:{
-//                user: 'owolabifelix78@gmail.com',
-//                pass: process.env.GOOGLE_PASS
-//            }
-//        })
-//     const info = await transporter.sendMail({
-//            from: 'AirBnb <owolabifelix78@gmail.com>',
-//            to: email,
-//            subject:'Welcome to AirBnb!',
-//            html: html,
-//            attachments:[{
-//                  filename: 'emailHeader.jpg',
-//                  path: './emailImages/emailHeader.jpg',
-//                  cid: 'airbnbHeader'
-//            }]
-//     })
-//     console.log('Message Sent:' + info.messageId);
+const registrationEmail=async(name,email,password)=>{
+     const html = `<style>
+                    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+                    *{
+                      box-sizing:border-box;
+                      font-family: 'Mukta', sans-serif;
+                    }
+                    </style>
+                    <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
+                    <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+                      <h2>Hii ${name.split(' ')[0]},</h2>
+                    <p style='max-width:80ch'>Now that you’re part of a global community of guests and Hosts, millions of doors have just opened to you. You'll discover getaways you’ve always dreamed of and places you wouldn’t have known to search for.</p>
+                    <h3>Below are your details upon registration:</h3>
+                      <div style='width:60%;border-radius:10px;border:1px dotted #FF5A5F;margin:0 auto;padding:1rem;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px #333'>
+                      <div><strong>Name</strong> : <span style='font-weight:600;color:green'>${name}</span></div>
+                      <div><strong>Email</strong> : <span style='font-weight:600;color:green'>${email}</span></div>
+                      <div><strong>Password</strong> : <span style='font-weight:600;color:green'>${password}</span></div>
+                      </div>
+                      <p><strong>N.B:</strong> Ensure to be careful with your details.</p>
+                      <p style='margin-block:15px'>Thank You for choosing us!. Be sure that you are going to have the best experience with the state-of-the-art apartments we have available for you.</p>
+                    </div>`;
+    const transporter = nodemailer.createTransport({
+           host: "smtp.gmail.com",
+           port: 587,
+           secure: false,
+           requireTLS:false,
+           auth:{
+               user: 'owolabifelix78@gmail.com',
+               pass: process.env.GOOGLE_PASS
+           },
+           tls:{
+            rejectUnauthorized: false,
+            servername: "smtp.gmail.com"
+           }
+       })
+    const info = await transporter.sendMail({
+           from: 'AirBnb <owolabifelix78@gmail.com>',
+           to: email,
+           subject:'Welcome to AirBnb!',
+           html: html,
+           attachments:[{
+                 filename: 'emailHeader.jpg',
+                 path: './emailImages/emailHeader.jpg',
+                 cid: 'airbnbHeader'
+           }]
+    })
+    console.log('Message Sent:' + info.messageId);
     
-// }
+}
 
 // const registrationEmail = async (name, email, password) => {
 //   return new Promise(async (resolve, reject) => {
@@ -101,33 +106,33 @@ app.use(cookieParser())
 
 
 
-const registrationEmail=(name,email,password)=>{
-     let transporter = nodemailer.createTransport({
-      service:"gmail",
-      auth:{
-        user: 'owolabifelix78@gmail.com',
-        pass: process.env.GOOGLE_PASS,
-      },
-      tls:{
-          rejectUnauthorized: true,
+// const registrationEmail=(name,email,password)=>{
+//      let transporter = nodemailer.createTransport({
+//       service:"gmail",
+//       auth:{
+//         user: 'owolabifelix78@gmail.com',
+//         pass: process.env.GOOGLE_PASS,
+//       },
+//       tls:{
+//           rejectUnauthorized: true,
         
-      },
-      ignoreTLS: true,
-     })
+//       },
+//       ignoreTLS: true,
+//      })
 
-     let mailOption = {
-      from : 'Airbnb <owolabifelix78@gmail.com>',
-      to : email,
-      subject: "Welcome to AirBnb!",
-      text: `Welcome ${name}-Password-${password}`
-     }
+//      let mailOption = {
+//       from : 'Airbnb <owolabifelix78@gmail.com>',
+//       to : email,
+//       subject: "Welcome to AirBnb!",
+//       text: `Welcome ${name}-Password-${password}`
+//      }
 
-     transporter.sendMail(mailOption).then((response)=>{
-      res.json({message:"Sent",response: response.envelope.to})
-     }).catch((err)=>{
-      console.log(`Error Occured:${err}`)
-     })
-}
+//      transporter.sendMail(mailOption).then((response)=>{
+//       res.json({message:"Sent",response: response.envelope.to})
+//      }).catch((err)=>{
+//       console.log(`Error Occured:${err}`)
+//      })
+// }
 
 
 const registerUser = async (req, res) => {
