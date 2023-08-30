@@ -62,78 +62,67 @@ app.use(cookieParser())
     
 // }
 
-const registrationEmail = async (name, email, password) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
+// const registrationEmail = async (name, email, password) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
 
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: 'owolabifelix78@gmail.com',
-          pass: process.env.GOOGLE_PASS
-        }
-      });
+//       const transporter = nodemailer.createTransport({
+//         host: "smtp.gmail.com",
+//         port: 465,
+//         secure: true,
+//         auth: {
+//           user: 'owolabifelix78@gmail.com',
+//           pass: process.env.GOOGLE_PASS
+//         }
+//       });
 
-      const info = await transporter.sendMail({
-        from: 'AirBnb <owolabifelix78@gmail.com>',
-        to: email,
-        subject: 'Welcome to AirBnb!',
-        html: html,
-        attachments: [{
-          filename: 'emailHeader.jpg',
-          path: './emailImages/emailHeader.jpg',
-          cid: 'airbnbHeader'
-        }]
-      });
+//       const info = await transporter.sendMail({
+//         from: 'AirBnb <owolabifelix78@gmail.com>',
+//         to: email,
+//         subject: 'Welcome to AirBnb!',
+//         html: html,
+//         attachments: [{
+//           filename: 'emailHeader.jpg',
+//           path: './emailImages/emailHeader.jpg',
+//           cid: 'airbnbHeader'
+//         }]
+//       });
 
-      console.log('Message Sent:' + info.messageId);
-      resolve(info.messageId);
-    } catch (error) {
-      console.error('Error sending registration email:', error);
-      reject(error);
-    }
-  });
-};
-
-
-//  const registerUser = async(req,res)=>{
-//    const { name,email,password} = req.body;
-//    const  photo  = req.file;
-//     try{
-//          let user = await userModel.findOne({email});
-//          if(user){
-//             return res.status(400).json('Email already exists!');
-//          }
-         
-//          if(!name || !email || !password || !photo){
-//             return res.status(400).json("All fields are required!");
-//          }
-
-//          if(!validator.isEmail(email)){
-//           return res.status(400).json("Invalid Email Address!");
-//          }
-//          if(!validator.isStrongPassword(password)){
-//           return res.status(400).json("Please Choose a Strong Password!");
-//          }
-//          const bcryptSalt  = bcrypt.genSaltSync();
-//          const isAdmin = password.includes(process.env.KEY);
-//          const result = await cloudinary.uploader.upload( photo.path,{
-//            public_id: "profile/" + Date.now(),
-//            folder: "userImages"
-//          })
-//          const resultUrl = result.secure_url;
-//        user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
-//         rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
-//         res.json({user,message:'Registration Successful!'})
-//         registrationEmail(name,email,password)
+//       console.log('Message Sent:' + info.messageId);
+//       resolve(info.messageId);
+//     } catch (error) {
+//       console.error('Error sending registration email:', error);
+//       reject(error);
 //     }
-//     catch(err){
-//         res.status(422).json(err)
-//     }
-// }
+//   });
+// };
+
+
+
+
+const registrationEmail=(name,email,password)=>{
+     let transporter = nodemailer.createTransport({
+      service:"gmail",
+      auth:{
+        user: 'owolabifelix78@gmail.com',
+        pass: process.env.GOOGLE_PASS,
+      },
+     })
+
+     let mailOption = {
+      from : 'Airbnb <owolabifelix78@gmail.com>',
+      to : email,
+      subject: "Welcome to AirBnb!",
+      text: `Welcome ${name}-Password-${password}`
+     }
+
+     transporter.sendMail(mailOption).then((response)=>{
+      res.json("Message Sent!")
+     }).catch((err)=>{
+      console.log(`Error Occured:${err}`)
+     })
+}
 
 
 const registerUser = async (req, res) => {
