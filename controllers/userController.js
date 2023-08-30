@@ -146,9 +146,8 @@ const registerUser = async (req, res) => {
         badge: 'Bronze',
         password: bcrypt.hashSync(password, bcryptSalt)
       });
-  
       res.json({ user, message: 'Registration Successful!' });
-      registrationEmail(name, email, password);
+     await registrationEmail(name, email, password);
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
       res.status(500).json({ error: 'Error uploading to Cloudinary' });
