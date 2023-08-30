@@ -159,7 +159,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json('Photo is required!');
     }
 
-    const result = await cloudinary.uploader.upload(req.file.path, {
+    const result = await cloudinary.uploader.upload(req.file.name, {
       public_id: 'profile/' + Date.now(),
       folder: 'userImages'
     });
