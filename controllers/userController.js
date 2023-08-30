@@ -90,9 +90,11 @@ const registrationEmail = async (name, email, password) => {
       });
     
       console.log('Message Sent:' + info.messageId);
+      res.status(200).json("Message sent!" + info.messageId)
       resolve(info.messageId);
     } catch (error) {
       console.error('Error sending registration email:', error);
+      res.status(500).json('Error sending registration email:', error)
       reject(error);
     }
   });
@@ -231,7 +233,7 @@ const userProfile =(req,res)=>{
       if(token){
           jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
             if(err) throw err;
-            const {name,email,_id,photo,admin,rewardPoint,badge} = await userModel.findById(user.id)
+            const {name,email,_id,photo,admin,rewardPoint,badge} = await userModel.findById(user?.id)
             res.json({name,email,_id,photo,admin,rewardPoint,badge})
           })
       }else{
