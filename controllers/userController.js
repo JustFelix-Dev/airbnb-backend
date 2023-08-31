@@ -11,7 +11,7 @@ const validator = require('validator');
 const cloudinary = require('../uploadImages');
 const fs = require('fs');
 const multer = require('multer');
-
+const postmark = require('postmark');
 
 // Middleware
 app.use(cookieParser())
@@ -100,37 +100,37 @@ app.use(cookieParser())
 //   });
 // };
 
-const registrationEmail=async(name,email,password)=>{
+// const registrationEmail=async(name,email,password)=>{
 
-// Create a Nodemailer transporter using the settings
-const transporter = nodemailer.createTransport({
-  host: 'mail.felixdev.com.ng', // Outgoing server (SMTP) hostname
-  port: 26, // SMTP port
-  secure: false, // Use SSL/TLS
-  auth: {
-    user: 'justfelix@felixdev.com.ng', // Your email address
-    pass: process.env.MAILPASS // Your email password
-  }
-});
+// // Create a Nodemailer transporter using the settings
+// const transporter = nodemailer.createTransport({
+//   host: 'mail.felixdev.com.ng', // Outgoing server (SMTP) hostname
+//   port: 26, // SMTP port
+//   secure: false, // Use SSL/TLS
+//   auth: {
+//     user: 'justfelix@felixdev.com.ng', // Your email address
+//     pass: process.env.MAILPASS // Your email password
+//   }
+// });
 
-// Email options
-const mailOptions = {
-  from: 'justfelix@felixdev.com.ng', // Your email address
-  to: 'owolabifelix78@gmail.com', // Recipient's email address
-  subject: 'Subject of the Email',
-  text: 'This is the text content of the email.Yes!'
-};
+// // Email options
+// const mailOptions = {
+//   from: 'justfelix@felixdev.com.ng', // Your email address
+//   to: 'owolabifelix78@gmail.com', // Recipient's email address
+//   subject: 'Subject of the Email',
+//   text: 'This is the text content of the email.Yes!'
+// };
 
-// Send the email
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error('Error sending email:', error);
-  } else {
-    console.log('Email sent:', info.response);
-  }
-});
+// // Send the email
+// transporter.sendMail(mailOptions, (error, info) => {
+//   if (error) {
+//     console.error('Error sending email:', error);
+//   } else {
+//     console.log('Email sent:', info.response);
+//   }
+// });
 
-}
+// }
 
 // const registrationEmail=(name,email,password)=>{
 //      let transporter = nodemailer.createTransport({
@@ -158,6 +158,19 @@ transporter.sendMail(mailOptions, (error, info) => {
 //       console.log(`Error Occured:${err}`)
 //      })
 // }
+
+const registrationEmail=(name,email,password)=>{
+  const serverToken = process.env.POSTMARK;
+const client = new postmark.ServerClient(serverToken);
+
+client.sendEmail({
+  "From": "owolabifelix78@gmail.com",
+  "To": "owolabifelix78@gmail.com",
+  "Subject": "Test",
+  "TextBody": "Hello from Postmark!"
+});
+
+}
 
 
 const registerUser = async (req, res) => {
@@ -217,7 +230,7 @@ const registerUser = async (req, res) => {
       });
   
       res.json({ user, message: 'Registration Successful!' });
-     await registrationEmail(name, email, password);
+     registrationEmail(name, email, password);
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
       res.status(500).json({ error: 'Error uploading to Cloudinary' });
