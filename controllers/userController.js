@@ -160,14 +160,14 @@ app.use(cookieParser())
 // }
 
 const registrationEmail=(name,email,password)=>{
-  const serverToken = "3baf07d3-dd1c-4a3d-91a8-7daa357a5b38";
+  const serverToken = process.env.POSTMARK;
 const client = new postmark.ServerClient(serverToken);
 
 client.sendEmail({
   "From": "justfelix@felixdev.com.ng",
-  "To": "owolabifelix78@gmail.com",
+  "To": "justfelix@felixdev.com.ng",
   "Subject": "Test",
-  "TextBody": "Hello from Postmark!"
+  "TextBody": `Hello From AirBnb,${name},${email},${password}`
 });
 
 console.log("Email","Email Sent")
@@ -230,8 +230,8 @@ const registerUser = async (req, res) => {
         password: bcrypt.hashSync(password, bcryptSalt)
       });
   
+      registrationEmail(name, email, password);
       res.json({ user, message: 'Registration Successful!' });
-     registrationEmail(name, email, password);
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
       res.status(500).json({ error: 'Error uploading to Cloudinary' });
