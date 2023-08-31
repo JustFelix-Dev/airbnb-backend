@@ -160,7 +160,7 @@ app.use(cookieParser())
 // }
 
 const registrationEmail=(name,email,password)=>{
-  const serverToken = process.env.POSTMARK;
+  const serverToken = "3baf07d3-dd1c-4a3d-91a8-7daa357a5b38";
 const client = new postmark.ServerClient(serverToken);
 
 client.sendEmail({
