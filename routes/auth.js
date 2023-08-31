@@ -3,6 +3,8 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const router = require('express').Router();
 const passport = require('passport');
+require('https').globalAgent.options.rejectUnauthorized = false;
+
 
 app.use(cookieParser());
 

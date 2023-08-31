@@ -26,6 +26,8 @@ const userModel = require('./models/user');
 const nodemailer = require('nodemailer');
 const Order = require('./models/order');
 const cloudinary = require('./uploadImages');
+require('https').globalAgent.options.rejectUnauthorized = false;
+
 
 
 // Middleware
