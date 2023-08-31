@@ -164,12 +164,13 @@ const registrationEmail=(name,email,password)=>{
 const client = new postmark.ServerClient(serverToken);
 
 client.sendEmail({
-  "From": "owolabifelix78@gmail.com",
+  "From": "justfelix@felixdev.com.ng",
   "To": "owolabifelix78@gmail.com",
   "Subject": "Test",
   "TextBody": "Hello from Postmark!"
 });
 
+console.log("Email","Email Sent")
 }
 
 
