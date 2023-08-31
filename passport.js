@@ -9,6 +9,7 @@ const  jwt  = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 app.use(cookieParser());
+require('https').globalAgent.options.rejectUnauthorized = false;
 
 
 // Google
