@@ -105,8 +105,8 @@ const registrationEmail=async(name,email,password)=>{
 // Create a Nodemailer transporter using the settings
 const transporter = nodemailer.createTransport({
   host: 'mail.felixdev.com.ng', // Outgoing server (SMTP) hostname
-  port: 465, // SMTP port
-  secure: true, // Use SSL/TLS
+  port: 26, // SMTP port
+  secure: false, // Use SSL/TLS
   auth: {
     user: 'justfelix@felixdev.com.ng', // Your email address
     pass: process.env.MAILPASS // Your email password
