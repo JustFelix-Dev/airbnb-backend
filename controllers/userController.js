@@ -118,7 +118,7 @@ const mailOptions = {
   from: 'justfelix@felixdev.com.ng', // Your email address
   to: 'owolabifelix78@gmail.com', // Recipient's email address
   subject: 'Subject of the Email',
-  text: 'This is the text content of the email.'
+  text: 'This is the text content of the email.Yes!'
 };
 
 // Send the email
