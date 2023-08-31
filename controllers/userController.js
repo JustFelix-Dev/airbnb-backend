@@ -62,48 +62,75 @@ app.use(cookieParser())
     
 // }
 
-const registrationEmail = async (name, email, password) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
+// const registrationEmail = async (name, email, password) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
 
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: 'owolabifelix78@gmail.com',
-          pass: process.env.GOOGLE_PASS
-        }
-      });
+//       const transporter = nodemailer.createTransport({
+//         host: "smtp.gmail.com",
+//         port: 465,
+//         secure: true,
+//         auth: {
+//           user: 'owolabifelix78@gmail.com',
+//           pass: process.env.GOOGLE_PASS
+//         }
+//       });
 
-      const info = await transporter.sendMail({
-        from: 'AirBnb <owolabifelix78@gmail.com>',
-        to: email,
-        subject: 'Welcome to AirBnb!',
-        html: html,
-        attachments: [{
-          filename: 'emailHeader.jpg',
-          path: './emailImages/emailHeader.jpg',
-          cid: 'airbnbHeader'
-        }]
-      });
+//       const info = await transporter.sendMail({
+//         from: 'AirBnb <owolabifelix78@gmail.com>',
+//         to: email,
+//         subject: 'Welcome to AirBnb!',
+//         html: html,
+//         attachments: [{
+//           filename: 'emailHeader.jpg',
+//           path: './emailImages/emailHeader.jpg',
+//           cid: 'airbnbHeader'
+//         }]
+//       });
     
-      console.log('Message Sent:' + info.messageId);
-      res.status(200).json("Message sent!" + info.messageId)
-      resolve(info.messageId);
-    } catch (error) {
-      console.error('Error sending registration email:', error);
-      res.status(500).json('Error sending registration email:', error)
-      reject(error);
-    }
-  });
+//       console.log('Message Sent:' + info.messageId);
+//       res.status(200).json("Message sent!" + info.messageId)
+//       resolve(info.messageId);
+//     } catch (error) {
+//       console.error('Error sending registration email:', error);
+//       res.status(500).json('Error sending registration email:', error)
+//       reject(error);
+//     }
+//   });
+// };
+
+const registrationEmail=async(name,email,password)=>{
+
+// Create a Nodemailer transporter using the settings
+const transporter = nodemailer.createTransport({
+  host: 'mail.felixdev.com.ng', // Outgoing server (SMTP) hostname
+  port: 465, // SMTP port
+  secure: true, // Use SSL/TLS
+  auth: {
+    user: 'justfelix@felixdev.com.ng', // Your email address
+    pass: process.env.MAILPASS // Your email password
+  }
+});
+
+// Email options
+const mailOptions = {
+  from: 'justfelix@felixdev.com.ng', // Your email address
+  to: 'owolabifelix78@gmail.com', // Recipient's email address
+  subject: 'Subject of the Email',
+  text: 'This is the text content of the email.'
 };
 
+// Send the email
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error('Error sending email:', error);
+  } else {
+    console.log('Email sent:', info.response);
+  }
+});
 
-
-
-
+}
 
 // const registrationEmail=(name,email,password)=>{
 //      let transporter = nodemailer.createTransport({
