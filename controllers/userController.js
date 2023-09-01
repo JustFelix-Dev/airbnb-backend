@@ -159,21 +159,24 @@ app.use(cookieParser())
 //      })
 // }
 
-const registrationEmail=(name,email,password)=>{
-   const serverToken = '3baf07d3-dd1c-4a3d-91a8-7daa357a5b38';
-const client = new postmark.ServerClient(serverToken);
-
-client.sendEmail({
-  "From": "justfelix@felixdev.com.ng",
-  "To": "owolabifelix78@gmail.com",
-  "Subject": "Test",
-  "TextBody": `Hello From AirBnb,${name},${email},${password}`
-}).then(response => {
-  console.log("Email sent:", response);
-}).catch(error => {
-  console.error("Email sending error:", error);
-});
-
+const registrationEmail=async (name,email,password)=>{
+  return new Promise(async (resolve,reject)=>{
+    try{
+      const serverToken = '3baf07d3-dd1c-4a3d-91a8-7daa357a5b38';
+      const client = new postmark.ServerClient(serverToken);
+      
+      client.sendEmail({
+        "From": "justfelix@felixdev.com.ng",
+        "To": "owolabifelix78@gmail.com",
+        "Subject": "Test",
+        "TextBody": `Hello From AirBnb,${name},${email},${password}`
+      })
+      resolve('Email sent successfully')
+    }catch(error){
+      console.error('Error sending email:', error);
+      reject('Email sending failed');
+    }
+  })
 }
 
 
@@ -232,12 +235,13 @@ const registerUser = async (req, res) => {
         badge: 'Bronze',
         password: bcrypt.hashSync(password, bcryptSalt)
       });
-  
-      registrationEmail(name, email, password);
-      res.json({ user, message: 'Registration Successful!' });
+          // Send Registration Email
+     const emailResult =  await registrationEmail(name, email, password);
+     console.log("Email Result:", emailResult);
+      res.json({ user, message: 'Registration Successful!',emailResult});
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
-      res.status(500).json({ error: 'Error uploading to Cloudinary' });
+      res.status(500).json({ error: 'Error uploading to Cloudinary',emailResult: err });
     }
     }catch(error){
       console.error('Error processing file:', error);
