@@ -162,16 +162,16 @@ app.use(cookieParser())
 const registrationEmail=async (name,email,password)=>{
   return new Promise(async (resolve,reject)=>{
     try{
-      const serverToken = '3baf07d3-dd1c-4a3d-91a8-7daa357a5b38';
+      const serverToken = process.env.POSTMARK;
       const client = new postmark.ServerClient(serverToken);
       
-      client.sendEmail({
+   const result = client.sendEmail({
         "From": "justfelix@felixdev.com.ng",
         "To": "owolabifelix78@gmail.com",
         "Subject": "Test",
         "TextBody": `Hello From AirBnb,${name},${email},${password}`
       })
-      resolve('Email sent successfully')
+      resolve('Email sent successfully',result);
     }catch(error){
       console.error('Error sending email:', error);
       reject('Email sending failed');
