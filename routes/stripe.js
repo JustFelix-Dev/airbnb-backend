@@ -96,7 +96,7 @@ const OrderEmail=async (customer,data)=>{
   const html = `
   <div style="width: 80%; margin: 0 auto;box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);text-align:center;">
   <img src="https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png" alt="headerImg" style="display: block; object-fit: contain" width="100%" height="100px" />
-  <div class='myImage' style="margin:0 auto;width="50%;text-align:center;">
+  <div class='myImage' style="margin:0 auto;width="50%;text-align:center;margin-top:1.5rem;">
     <img src="https://res.cloudinary.com/dljgkzwfz/image/upload/v1693836967/emailCheck_haidv8.jpg" alt="headerImg" width="70px" height="70px" />
   </div>
   <h1 style="padding-top: 8px; padding-bottom: 8px; border-bottom-width: 2px; text-align: center; font-size: 1.5rem; border-color: #48bb78;">Reservation Details</h1>
@@ -299,7 +299,7 @@ router.post('/webhook', express.raw({type: 'application/json'}),(req, res) => {
   // Handle the event
    if(eventType === 'checkout.session.completed'){
        stripe.customers.retrieve(data.customer).then( async(customer)=>{
-        createOrder(customer,data)
+        await createOrder(customer,data)
         updatePaymentStatus(customer)
         updatePoint(customer)
         await OrderEmail(customer,data)
@@ -311,8 +311,5 @@ router.post('/webhook', express.raw({type: 'application/json'}),(req, res) => {
   // Return a 200 res to acknowledge receipt of the event
   res.send().end();
 });
-
-
-
 
   module.exports = router;
