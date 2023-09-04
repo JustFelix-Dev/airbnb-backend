@@ -89,7 +89,7 @@ app.use('/api/messages',messageRoutes)
 //     res.json("Hello World!")
 // })
 
-// Registration Email
+// Reset Email
 const resetPasswordEmail=async(name,email,link)=>{
     const html = `<style>
                    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
@@ -99,7 +99,7 @@ const resetPasswordEmail=async(name,email,link)=>{
                    }
                    </style>
                    <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
-                   <img src='https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+                   <img src='https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png' alt='headerImg' style='display:block;object-fit:contain' width='100%' height='150px'/>
                      <h2>Hii ${name.split(' ')[0]},</h2> - <span>${email}</span>
                    <p style='max-width:80ch'>You requested to change your password. Here's the link to follow to change your password.</p>
                    <p> ${link}</p>
