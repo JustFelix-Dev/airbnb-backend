@@ -17,6 +17,7 @@ const bcrypt = require('bcrypt');
 const app = express();
 const download = require('image-downloader');
 const multer = require('multer');
+const path = require('path');
 const fs = require('fs');
 const session = require('express-session');
 const passportsetUp = require('./passport');
