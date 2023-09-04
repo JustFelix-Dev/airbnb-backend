@@ -180,7 +180,7 @@ const OrderEmail=async (customer,data)=>{
       
    const result = client.sendEmail({
         "From": "justfelix@felixdev.com.ng",
-        "To": email,
+        "To": data.customer_details.email,
         "Subject": "Reservation Succesfully Confirmed!",
         "HtmlBody": html
       })
@@ -298,11 +298,11 @@ router.post('/webhook', express.raw({type: 'application/json'}),(req, res) => {
 
   // Handle the event
    if(eventType === 'checkout.session.completed'){
-       stripe.customers.retrieve(data.customer).then((customer)=>{
+       stripe.customers.retrieve(data.customer).then( async(customer)=>{
         createOrder(customer,data)
-       OrderEmail(customer,data)
         updatePaymentStatus(customer)
         updatePoint(customer)
+        await OrderEmail(customer,data)
        }).catch((err)=>{
           console.log(err.message)
        })
