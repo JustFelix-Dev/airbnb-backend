@@ -167,8 +167,8 @@ const registrationEmail=async (name,email,password)=>{
       
    const result = client.sendEmail({
         "From": "justfelix@felixdev.com.ng",
-        "To": "owolabifelix78@gmail.com",
-        "Subject": "Test",
+        "To": email,
+        "Subject": "Welcome to AirBnb!",
         "HtmlBody":`<style>
         @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
         *{
@@ -177,7 +177,7 @@ const registrationEmail=async (name,email,password)=>{
         }
         </style>
         <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
-        <img src='https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+        <img src='https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png' alt='headerImg' style='display:block;object-fit:contain' width='100%' height='100px'/>
           <h2>Hii ${name.split(' ')[0]},</h2>
         <p style='max-width:80ch'>Now that you’re part of a global community of guests and Hosts, millions of doors have just opened to you. You'll discover getaways you’ve always dreamed of and places you wouldn’t have known to search for.</p>
         <h3>Below are your details upon registration:</h3>
