@@ -92,6 +92,7 @@ passport.use(new GithubStrategy({
          return done(null, existingUser);
         }
      }catch(err){
+       console.error("Error in Github Strategy:", err)
          return done(err)
      }
   }
