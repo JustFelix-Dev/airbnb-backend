@@ -96,38 +96,30 @@ const resetPasswordEmail=async(name,email,link)=>{
                    }
                    </style>
                    <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
-                   <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
-                     <h2>Hii ${name.split(' ')[0]},</h2>
+                   <img src='https://res.cloudinary.com/dljgkzwfz/image/upload/v1693831482/userImages/airbnb_lssgog.png' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+                     <h2>Hii ${name.split(' ')[0]},</h2> - <span>${email}</span>
                    <p style='max-width:80ch'>You requested to change your password. Here's the link to follow to change your password.</p>
                    <p> ${link}</p>
                      <p><strong>N.B:</strong>Note that this link would expire in <strong>3</strong> minutes.</p>
                      
                    </div>`;
-   const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 587,
-          secure: false,
-          auth:{
-              user: 'owolabifelix78@gmail.com',
-              pass: process.env.GOOGLE_PASS
-          },
-      })
-      try{
-        const info = await transporter.sendMail({
-            from: 'AirBnb <owolabifelix78@gmail.com>',
-            to: email,
-            subject:'AirBnb - Password Reset!',
-            html: html,
-            attachments:[{
-                  filename: 'emailHeader.jpg',
-                  path: './emailImages/emailHeader.jpg',
-                  cid: 'airbnbHeader'
-            }]
-     })
-     console.log('Message Sent:' + info.messageId);
-      }catch(err){
-           console.log("Message Error:", err)
-      }
+                   return new Promise(async (resolve,reject)=>{
+                    try{
+                      const serverToken = process.env.POSTMARK;
+                      const client = new postmark.ServerClient(serverToken);
+                      
+                   const result = client.sendEmail({
+                        "From": "justfelix@felixdev.com.ng",
+                        "To": "owolabifelix78@gmail.com",
+                        "Subject": "AirBnb - Password Reset!",
+                         "HtmlBody": html,
+                      })
+                      resolve('Email sent successfully',result);
+                    }catch(error){
+                      console.error('Error sending email:', error);
+                      reject('Email sending failed');
+                    }
+                  })
   
    
 }
@@ -207,7 +199,7 @@ app.post('/forgotPassword',async(req,res)=>{
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
         const link = `https://www.airbnb-server.felixdev.com.ng/reset-password/${existingUser._id}/${token}`;
         //send email with the reset password url to the registered mail id
-        resetPasswordEmail(existingUser?.name,existingUser?.email,link)
+       await resetPasswordEmail(existingUser?.name,existingUser?.email,link)
         res.status(200).json('Reset Link sent successfully!')
       }catch(err){
         res.status(401).json('Something went wrong!')
