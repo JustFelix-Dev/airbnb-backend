@@ -10,6 +10,9 @@ This section provides an overview of the back-end of the AirBnB application, whi
 - [Database](#database)
 - [Technologies Used](#technologies-used)
 
+![AirBnB Screenshot](https://res.cloudinary.com/dljgkzwfz/image/upload/v1694427320/Github%20ReadMe%20Screenshots/Screenshot_73_hdcphh.png)
+
+
 ## Project Structure
 
 The back-end of AirBnB is organized as follows:
@@ -172,5 +175,4 @@ The back-end of AirBnB is primarily built with the following technologies:
 - Node.js: A JavaScript runtime for building server-side applications.
 - MongoDB: A NoSQL database used to store application data.
 
-![AirBnB Screenshot](https://res.cloudinary.com/dljgkzwfz/image/upload/v1694427320/Github%20ReadMe%20Screenshots/Screenshot_73_hdcphh.png)
 
